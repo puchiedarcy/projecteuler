@@ -124,4 +124,6 @@ lda tmp
 jsr PRBYTE
 jsr CROUT
 
+; convert the above hex to decimal, then add 993, 996, 999, and 995.
+
 rts
