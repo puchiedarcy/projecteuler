@@ -14,6 +14,7 @@ if(-Not $?) {
 }
 
 Copy-Item ./resources/empty.dsk "$prefix.dsk"
+diskm8 -with-disk "$prefix.dsk" -file-put "zp#0x00EB.bin"
 diskm8 -with-disk "$prefix.dsk" -file-put "ram#0x0C00.bin"
 diskm8 -with-disk "$prefix.dsk" -file-put "prg#0x6000.bin"
 

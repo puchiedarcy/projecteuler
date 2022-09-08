@@ -3,6 +3,13 @@
 ;
 ; Find the sum of all the multiples of 3 or 5 below 1000.
 
+.ZEROPAGE
+tmp: .res 1
+tmp2: .res 1
+tmp3: .res 1
+tmpl: .res 1
+tmph: .res 1
+
 .DATA
 Sum: .res 1
 Message: .asciiz "Hello World"
@@ -16,13 +23,13 @@ adc #2
 sta Sum
 
 lda #<Message
-sta $EE
+sta tmpl
 lda #>Message
-sta $EF
+sta tmph
 
 ldy #0
 Print_Next:
-lda ($EE),y
+lda (tmpl),y
 cmp #0
 beq Print_End
 
