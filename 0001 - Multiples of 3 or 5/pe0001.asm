@@ -1,17 +1,17 @@
-CLC      ; CLEAR CARRY BIT
-CLD      ; CLEAR DECIMAL BIT
+; Multiples of 3 or 5
+; If we list all the natural numbers below 10 that are multiples of 3 or 5, we get 3, 5, 6 and 9. The sum of these multiples is 23.
+;
+; Find the sum of all the multiples of 3 or 5 below 1000.
 
-ADR1 = $6100 ; WHERE IN MEMORY ARE THESE THINGS
-ADR2 = $6101
-ADR3 = $6102
+.segment "DATA"
+SUM: .res 1
+
+.segment "CODE"
+CLC
+CLD
 
 LDA #01
-STA ADR1
-LDA #02
-STA ADR2
-
-LDA ADR1 ; LOAD CONTENTS OF ADR1 INTO ACCUMULATOR
-ADC ADR2 ; ADD CONTENTS OF ADR2 INTO ACCUMULATOR 
-STA ADR3 ; TRANSFER CONTENT OF ACC TO ADR3
+ADC #02 
+STA SUM
 
 RTS
