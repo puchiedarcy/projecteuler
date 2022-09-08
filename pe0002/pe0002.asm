@@ -11,15 +11,169 @@ PRBYTE = $FDDA
 
 
 .ZEROPAGE
-tmp: .res 1
-tmp2: .res 1
-tmp3: .res 1
-tmpl: .res 1
-tmph: .res 1
+tmp: .res 1, $00
+tmp2: .res 1, $00
+tmp3: .res 1, $00
+tmpl: .res 1, $00
+tmph: .res 1, $00
 
 .DATA
+fourmil: .res 1, $00   ; 00
+fourmil2: .res 1, $00   ; 09
+fourmil3: .res 1, $3D    ; 3D
 
+summandA: .res 1, $00
+summandA2: .res 1, $00
+summandA3: .res 1, $00
+
+summandB: .res 1, $00
+summandB2: .res 1, $00
+summandB3: .res 1, $00
+
+sum: .res 1, $00
+sum2: .res 1, $00
+sum3: .res 1, $00
+
+carry: .res 1, $00
+carry2: .res 1, $00
 
 .CODE
+ROUND1:
 
+lda #1
+sta summandA
+sta summandB
+lda #0
+sta summandA2
+sta summandB2
+sta summandA3
+sta summandB3
+sta sum
+sta sum2
+sta sum3
+sta carry
+sta carry2
+sta tmp
+sta tmp2
+sta tmp3
+
+START_FIBO:
+lda #0
+sta sum
+sta sum2
+sta sum3
+sta carry
+sta carry2
+
+lda summandA
+clc
+adc summandB
+sta sum
+bcc NO_CARRY
+
+lda #1
+sta carry
+
+NO_CARRY:
+lda summandA2
+clc
+adc summandB2
+sta sum2
+bcc NO_CARRY2
+
+lda #1
+sta carry2
+
+NO_CARRY2:
+lda summandA3
+clc
+adc summandB3
+sta sum3
+
+clc
+adc carry2
+sta sum3
+
+lda sum2
+clc
+adc carry
+sta sum2
+
+lda #0
+sta carry
+sta carry2
+
+sec
+lda fourmil3
+sbc sum3
+bcc END
+
+lda summandB
+sta summandA
+lda summandB2
+sta summandA2
+lda summandB3
+sta summandA3
+
+lda sum
+sta summandB
+lda sum2
+sta summandB2
+lda sum3
+sta summandB3
+
+lda summandB
+and #%0000001
+beq ADD_EVEN_NUM
+jmp START_FIBO
+ADD_EVEN_NUM:
+lda tmp
+clc
+adc summandB
+sta tmp
+bcc NO_CARRY_EVEN
+
+lda #1
+sta carry
+
+NO_CARRY_EVEN:
+lda tmp2
+clc
+adc summandB2
+sta tmp2
+bcc NO_CARRY_EVEN2
+lda #1
+sta carry2
+NO_CARRY_EVEN2:
+
+lda tmp3
+clc
+adc summandB3
+sta tmp3
+
+clc
+adc carry2
+sta tmp3
+
+lda tmp2
+clc
+adc carry
+sta tmp2
+
+jmp START_FIBO
+
+END:
+lda tmp3
+jsr PRBYTE
+jsr CROUT
+
+lda tmp2
+jsr PRBYTE
+jsr CROUT
+
+lda tmp
+jsr PRBYTE
+jsr CROUT
+
+;jmp ROUND1
 rts
