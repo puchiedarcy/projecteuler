@@ -77,11 +77,16 @@ adc #<BASE_SUM
 sta tmp
 
 bcc NO_CARRY
-inc tmp2
+lda tmp2
+clc
+adc #1
+sta tmp2
+bcc NO_CARRY
+inc tmp3
 
 NO_CARRY:
-sty tmp3
-ldx tmp3
+sty tmpl
+ldx tmpl
 
 START_ADDING_INNER:
 dex
@@ -93,13 +98,23 @@ adc #<INC_SUM
 sta tmp
 
 bcc NO_CARRY_INNER
-inc tmp2
+lda tmp2
+clc
+adc #1
+sta tmp2
+bcc NO_CARRY_INNER
+inc tmp3
+
 NO_CARRY_INNER:
 jmp START_ADDING_INNER
 
 DONE_INNER:
 dey
 bne START_ADDING
+
+lda tmp3
+jsr PRBYTE
+jsr CROUT
 
 lda tmp2
 jsr PRBYTE
