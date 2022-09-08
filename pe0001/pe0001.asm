@@ -68,7 +68,7 @@ lda #0
 sta tmp
 sta tmp2
 sta tmp3
-ldy #10
+ldy #<NUM_LOOPS
 
 START_ADDING:
 lda tmp
@@ -80,6 +80,24 @@ bcc NO_CARRY
 inc tmp2
 
 NO_CARRY:
+sty tmp3
+ldx tmp3
+
+START_ADDING_INNER:
+dex
+beq DONE_INNER
+
+lda tmp
+clc
+adc #<INC_SUM
+sta tmp
+
+bcc NO_CARRY_INNER
+inc tmp2
+NO_CARRY_INNER:
+jmp START_ADDING_INNER
+
+DONE_INNER:
 dey
 bne START_ADDING
 
