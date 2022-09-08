@@ -1,9 +1,11 @@
 $problemNumber = $args[0]
+$prefix = "pe$problemNumber/pe$problemNumber"
 
-ca65 $problemNumber/pe$problemNumber.asm -o $problemNumber/pe$problemNumber.o
-ld65 -o $problemNumber/pe#0x6000.bin -C ./resources/apple2bin.cfg $problemNumber/pe$problemNumber.o
-Remove-Item $problemNumber/pe$problemNumber.o
-Copy-Item ./resources/empty.dsk $problemNumber/pe$problemNumber.dsk
-diskm8 -with-disk $problemNumber/pe$problemNumber.dsk -file-put $problemNumber/pe#0x6000.bin
-Remove-Item $problemNumber/pe#0x6000.bin
-applewin -d1 $problemNumber/pe$problemNumber.dsk
+ca65 "$prefix.asm" -o "$prefix.o"
+ld65 -C "./resources/apple2bin.cfg" "$prefix.o"
+Remove-Item "$prefix.o"
+Copy-Item ./resources/empty.dsk "$prefix.dsk"
+diskm8 -with-disk "$prefix.dsk" -file-put "ram#0x0C00.bin"
+diskm8 -with-disk "$prefix.dsk" -file-put "prg#0x6000.bin"
+Remove-Item "*.bin"
+applewin -d1 "$prefix.dsk"

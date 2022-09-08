@@ -3,15 +3,16 @@
 ;
 ; Find the sum of all the multiples of 3 or 5 below 1000.
 
-.segment "DATA"
-SUM: .res 1
+.DATA
+Sum: .res 1
+.asciiz "Hello"
 
-.segment "CODE"
+.CODE
 CLC
 CLD
 
 LDA #01
 ADC #02 
-STA SUM
+STA Sum
 
 RTS
