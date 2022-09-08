@@ -5,14 +5,32 @@
 
 .DATA
 Sum: .res 1
-.asciiz "Hello"
+Message: .asciiz "Hello World"
 
 .CODE
-CLC
-CLD
+clc
+cld
 
-LDA #01
-ADC #02 
-STA Sum
+lda #1
+adc #2
+sta Sum
 
-RTS
+lda #<Message
+sta $00
+lda #>Message
+sta $01
+
+ldy #0
+Print_Next:
+lda ($00),y
+cmp #0
+beq Print_End
+
+clc
+adc #128
+jsr $FDF0
+iny
+jmp Print_Next
+
+Print_End:
+rts
