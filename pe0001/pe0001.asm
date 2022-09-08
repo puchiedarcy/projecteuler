@@ -16,13 +16,13 @@ adc #2
 sta Sum
 
 lda #<Message
-sta $00
+sta $EE
 lda #>Message
-sta $01
+sta $EF
 
 ldy #0
 Print_Next:
-lda ($00),y
+lda ($EE),y
 cmp #0
 beq Print_End
 
